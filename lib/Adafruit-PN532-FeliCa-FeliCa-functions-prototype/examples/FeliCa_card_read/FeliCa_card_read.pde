@@ -104,7 +104,7 @@ void loop(void) {
   if ( memcmp(idm, _prevIDm, 8) == 0 ) {
     if ( (millis() - _prevTime) < 3000 ) {
       Serial.println("Same card");
-      delay(500);
+      delay(1000);
       return;
     }
   }
@@ -121,6 +121,21 @@ void loop(void) {
   memcpy(_prevIDm, idm, 8);
   _prevTime = millis();
 
+  Serial.print("Read Without Encryption command -> ");
+  uint8_t blockData[3][16];
+  uint16_t serviceCodeList[1] = {0x000B};
+  uint16_t blockList[3] = {0x8000, 0x8001, 0x8002};
+  ret = nfc.felica_ReadWithoutEncryption(1, serviceCodeList, 3, blockList, blockData);
+  if (ret != 1)
+  {
+    Serial.println("error");
+  } else {
+    Serial.println("OK!");
+    for(int i=0; i<3; i++ ) {
+      Serial.print("  Block no. "); Serial.print(i, DEC); Serial.print(": ");
+      nfc.PrintHex(blockData[i], 16);
+    }
+  }
 
   // Wait 1 second before continuing
   Serial.println("Card access completed!\n");
