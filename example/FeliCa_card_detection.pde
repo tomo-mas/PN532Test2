@@ -36,7 +36,7 @@
 // the PN532 SCK, MOSI, and MISO pins need to be connected to the Arduino's
 // hardware SPI SCK, MOSI, and MISO pins.  On an Arduino Uno these are
 // SCK = 13, MOSI = 11, MISO = 12.  The SS line can be any digital IO pin.
-Adafruit_PN532 nfc(10);
+Adafruit_PN532 nfc(PN532_SS);
 
 // Or use this line for a breakout or shield with an I2C connection:
 //Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
@@ -97,14 +97,14 @@ void loop(void) {
   if (ret != 1)
   {
     Serial.println("Could not find a card");
-    delay(1000);
+    delay(500);
     return;
   }
 
   if ( memcmp(idm, _prevIDm, 8) == 0 ) {
-    if ( (_prevTime - millis()) < 2000 ) {
+    if ( (millis() - _prevTime) < 3000 ) {
       Serial.println("Same card");
-      delay(1000);
+      delay(500);
       return;
     }
   }

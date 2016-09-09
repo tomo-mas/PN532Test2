@@ -48,8 +48,6 @@
  #include "WProgram.h"
 #endif
 
-#define PN532DEBUG
-
 #include <Wire.h>
 #if defined(__AVR__) || defined(__i386__) || defined(ARDUINO_ARCH_SAMD) || defined(ESP8266) || defined(ARDUINO_ARCH_STM32)
  #define WIRE Wire
