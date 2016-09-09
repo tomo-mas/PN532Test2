@@ -121,30 +121,11 @@ void loop(void) {
   memcpy(_prevIDm, idm, 8);
   _prevTime = millis();
 
-
-  Serial.print("Request Service command -> ");
-  uint16_t nodeCodeList[3] = {0x0000, 0x1000, 0xFFFF};
-  uint16_t keyVersions[3];
-  ret = nfc.felica_RequestService(3, nodeCodeList, keyVersions);
-
-  if (ret != 1)
-  {
-    Serial.println("error");
-  } else {
-    Serial.println("OK!");
-    for(int i=0; i<5; i++ ) {
-      Serial.print("  Node Code: "); nfc.PrintHex16(nodeCodeList[i]);
-      Serial.print(" -> Key Version: "); nfc.PrintHex16(keyVersions[i]);
-      Serial.println("");
-    }
-  }
-
   Serial.print("Read Without Encryption command -> ");
   uint8_t blockData[3][16];
   uint16_t serviceCodeList[1] = {0x000B};
   uint16_t blockList[3] = {0x8000, 0x8001, 0x8002};
   ret = nfc.felica_ReadWithoutEncryption(1, serviceCodeList, 3, blockList, blockData);
-
   if (ret != 1)
   {
     Serial.println("error");
@@ -153,33 +134,6 @@ void loop(void) {
     for(int i=0; i<3; i++ ) {
       Serial.print("  Block no. "); Serial.print(i, DEC); Serial.print(": ");
       nfc.PrintHex(blockData[i], 16);
-    }
-  }
-
-
-  Serial.print("Request Response command -> ");
-  uint8_t mode;
-  ret = nfc.felica_RequestResponse(&mode);
-  if (ret != 1)
-  {
-    Serial.println("error");
-  } else {
-    Serial.println("OK!");
-    Serial.print("  mode: "); Serial.println(mode, DEC);
-  }
-
-
-  Serial.print("Request System Code command -> ");
-  uint8_t numSystemCode;
-  uint16_t systemCodeList[16];
-  ret = nfc.felica_RequestSystemCode(&numSystemCode, systemCodeList);
-  if (ret != 1)
-  {
-    Serial.println("error");
-  } else {
-    Serial.println("OK!");
-    for(int i=0; i< numSystemCode; i++) {
-      Serial.print("  System code: ");  nfc.PrintHex16(systemCodeList[i]); Serial.println("");
     }
   }
 

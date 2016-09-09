@@ -1611,7 +1611,6 @@ int8_t Adafruit_PN532::felica_SendCommand (const uint8_t *commandBuf, uint8_t co
     #endif
     return -1;
   }
-  uint8_t i;
 
   pn532_packetbuffer[0] = 0x40; // PN532_COMMAND_INDATAEXCHANGE;
   pn532_packetbuffer[1] = _inListedTag;
